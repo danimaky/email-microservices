@@ -1,5 +1,4 @@
 from __future__ import unicode_literals, absolute_import
-
 from celery import chain
 from django.contrib.auth.models import User
 from django.core.mail import EmailMessage
@@ -78,3 +77,7 @@ def sendfile(path):
 def cleanfolder(path):
     remove(path)
 
+
+@app.task(bind=True)
+def reportgenerator(self):
+    chain(loadfileactiveusers.s(), sendfile.s(), cleanfolder.s())()
