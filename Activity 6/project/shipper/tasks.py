@@ -53,11 +53,9 @@ def loadfileactiveusers():
               "is_staff",
               "is_active",
               "date_joined")
-    for field in range(0, len(fields)):
-        sheet.write(0, field, fields[field])
-    for user in range(0, len(users)):
-        for field in range(0, len(fields)):
-            sheet.write(user+1, field, users[user].__getattribute__(fields[field]))
+    [sheet.write(0, field, fields[field]) for field in range(len(fields))]
+    [[sheet.write(user+1, field, users[user].__getattribute__(fields[field]))
+      for field in range(len(fields))] for user in range(len(users))]
     book.close()
     return 'media/report.xls'
 
